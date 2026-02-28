@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from bs4 import BeautifulSoup
 
 from crawl0.plugins.restaurant import RestaurantExtractor, RestaurantData
 from crawl0.plugins.ecommerce import EcommerceExtractor, EcommerceData

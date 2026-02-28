@@ -5,7 +5,6 @@ from __future__ import annotations
 import asyncio
 import uuid
 from datetime import datetime, timezone
-from typing import Any
 
 from crawl0.api.models import JobStatus, ScrapeResponse, OutputFormat
 

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import math
 import random
 import re
 from dataclasses import dataclass, field
@@ -116,7 +115,7 @@ class BrowserFingerprint:
     @property
     def navigator_overrides_js(self) -> str:
         """JavaScript to inject for navigator property overrides."""
-        langs_js = ", ".join(f'"{l}"' for l in self.languages)
+        langs_js = ", ".join(f'"{lang}"' for lang in self.languages)
         return f"""
         Object.defineProperty(navigator, 'webdriver', {{get: () => undefined}});
         Object.defineProperty(navigator, 'platform', {{get: () => '{self.platform}'}});

@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
-import asyncio
 from unittest.mock import AsyncMock, patch, MagicMock
 
 import pytest
 from fastapi.testclient import TestClient
 
 from crawl0.api.main import app
-from crawl0.api.workers.queue import job_queue, Job
+from crawl0.api.workers.queue import job_queue
 from crawl0.api.models import JobStatus
 from crawl0.models import ScrapeResult, PageMetadata
 

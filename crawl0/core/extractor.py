@@ -7,7 +7,7 @@ import asyncio
 from pydantic import BaseModel
 
 from crawl0.core.scraper import scrape_async
-from crawl0.plugins import EXTRACTORS, BaseExtractor
+from crawl0.plugins import EXTRACTORS
 
 
 async def extract_async(

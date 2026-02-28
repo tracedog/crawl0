@@ -3,9 +3,8 @@
 from __future__ import annotations
 
 import re
-from urllib.parse import urljoin
 
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup
 from pydantic import BaseModel, Field
 
 from crawl0.plugins.base import BaseExtractor

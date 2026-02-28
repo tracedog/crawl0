@@ -3,14 +3,13 @@
 from __future__ import annotations
 
 import asyncio
-import io
 import tempfile
 import time
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response, StreamingResponse
+from fastapi.responses import Response
 
 import crawl0
 from crawl0.api.models import (

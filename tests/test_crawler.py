@@ -6,7 +6,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from crawl0.core.crawler import Crawler, crawl_async
+from crawl0.core.crawler import Crawler
 from crawl0.models import ScrapeResult
 
 

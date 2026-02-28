@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
 
 from crawl0.core.stealth import (
     BrowserFingerprint,

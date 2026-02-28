@@ -8,7 +8,6 @@ from pathlib import Path
 import pytest
 
 from crawl0.utils.proxy import (
-    ProxyEntry,
     ProxyProtocol,
     ProxyRotator,
     RotationStrategy,

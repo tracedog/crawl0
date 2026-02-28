@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "crawl0"
-version = "0.3.0"
+version = "1.0.0"
 description = "The open-source Firecrawl alternative. Scrape any website. Get LLM-ready output. Free."
 readme = "README.md"
 license = "MIT"
@@ -14,11 +14,14 @@ authors = [
 ]
 keywords = ["scraper", "web-scraping", "markdown", "llm", "playwright"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Internet :: WWW/HTTP",
 ]
 dependencies = [
@@ -56,6 +59,9 @@ Issues = "https://github.com/tracedog/crawl0/issues"
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+markers = [
+    "integration: tests that hit real URLs (deselect with -m 'not integration')",
+]
 
 [tool.ruff]
 target-version = "py311"
