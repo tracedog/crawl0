@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "crawl0"
-version = "0.1.0"
+version = "0.2.0"
 description = "The open-source Firecrawl alternative. Scrape any website. Get LLM-ready output. Free."
 readme = "README.md"
 license = "MIT"
@@ -29,7 +29,11 @@ dependencies = [
     "typer[all]>=0.9",
     "pydantic>=2.5",
     "lxml>=5.0",
+    "markdown>=3.5",
 ]
+
+[project.optional-dependencies.pdf]
+weasyprint = ["weasyprint>=60"]
 
 [project.optional-dependencies]
 dev = [
