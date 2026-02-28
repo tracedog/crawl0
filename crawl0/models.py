@@ -37,6 +37,8 @@ class ScrapeResult(BaseModel):
     scraped_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     elapsed_ms: float = 0.0
     method: str = "httpx"  # "httpx" or "playwright"
+    captcha_detected: bool = False
+    waf_detected: str | None = None
     error: str | None = None
 
     def to_dict(self) -> dict[str, Any]:

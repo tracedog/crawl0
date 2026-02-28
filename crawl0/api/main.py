@@ -34,6 +34,7 @@ from crawl0.core.scraper import scrape_async, screenshot_async
 from crawl0.core.crawler import crawl_async
 from crawl0.core.extractor import extract_async
 from crawl0.output.pdf import markdown_to_pdf
+from crawl0.utils.proxy import _parse_proxy
 
 app = FastAPI(
     title="Crawl0 API",
@@ -73,12 +74,15 @@ async def health() -> HealthResponse:
 
 @app.post("/scrape", response_model=ScrapeResponse)
 async def scrape(req: ScrapeRequest) -> ScrapeResponse:
+    proxy_entry = _parse_proxy(req.proxy) if req.proxy else None
     try:
         result = await scrape_async(
             req.url,
             force_playwright=req.force_playwright,
             respect_robots=req.respect_robots,
             timeout=req.timeout,
+            stealth=req.stealth,
+            proxy=proxy_entry,
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -92,6 +96,8 @@ async def scrape(req: ScrapeRequest) -> ScrapeResponse:
         images=result.images,
         elapsed_ms=result.elapsed_ms,
         method=result.method,
+        captcha_detected=result.captcha_detected,
+        waf_detected=result.waf_detected,
         error=result.error,
     )
 

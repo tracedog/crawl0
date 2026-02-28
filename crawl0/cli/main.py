@@ -43,16 +43,36 @@ def scrape(
     playwright: bool = typer.Option(False, "--playwright", "-p", help="Force Playwright rendering"),
     no_robots: bool = typer.Option(False, "--no-robots", help="Ignore robots.txt"),
     include_html: bool = typer.Option(False, "--include-html", help="Include raw HTML in JSON output"),
+    stealth: bool = typer.Option(False, "--stealth", help="Enable full stealth mode (fingerprint randomization, human behavior)"),
+    proxy_file: Optional[str] = typer.Option(None, "--proxy-file", help="Path to proxy list file (one per line)"),
+    proxy: Optional[str] = typer.Option(None, "--proxy", help="Single proxy URL (e.g. http://host:port)"),
 ) -> None:
     """Scrape a URL and output clean markdown, JSON, or HTML."""
     from crawl0.core.scraper import scrape_async
     from crawl0.output.json_out import to_json
+    from crawl0.utils.proxy import ProxyRotator, load_proxies_from_file, _parse_proxy
+
+    # Set up proxy
+    proxy_rotator = None
+    proxy_entry = None
+    if proxy_file:
+        try:
+            proxy_urls = load_proxies_from_file(proxy_file)
+            proxy_rotator = ProxyRotator(proxy_urls)
+        except FileNotFoundError as e:
+            typer.secho(str(e), fg=typer.colors.RED, err=True)
+            raise typer.Exit(code=1)
+    elif proxy:
+        proxy_entry = _parse_proxy(proxy)
 
     result = asyncio.run(
         scrape_async(
             url,
             force_playwright=playwright,
             respect_robots=not no_robots,
+            stealth=stealth,
+            proxy=proxy_entry,
+            proxy_rotator=proxy_rotator,
         )
     )
 
@@ -76,9 +96,14 @@ def scrape(
         typer.echo(content)
 
     # Stats to stderr
+    extra = ""
+    if result.captcha_detected:
+        extra += " | ⚠ CAPTCHA detected"
+    if result.waf_detected:
+        extra += f" | 🛡 WAF: {result.waf_detected}"
     typer.secho(
         f"\n--- {result.method} | {result.status_code} | {result.elapsed_ms:.0f}ms | "
-        f"{len(result.links)} links | {len(result.images)} images ---",
+        f"{len(result.links)} links | {len(result.images)} images{extra} ---",
         fg=typer.colors.BRIGHT_BLACK,
         err=True,
     )

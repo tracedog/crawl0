@@ -33,6 +33,8 @@ class ScrapeRequest(BaseModel):
     force_playwright: bool = False
     respect_robots: bool = True
     timeout: float = 30.0
+    stealth: bool = False
+    proxy: str | None = None
 
 
 class ScrapeResponse(BaseModel):
@@ -44,6 +46,8 @@ class ScrapeResponse(BaseModel):
     images: list[str] = Field(default_factory=list)
     elapsed_ms: float = 0.0
     method: str = "httpx"
+    captcha_detected: bool = False
+    waf_detected: str | None = None
     error: str | None = None
 
 
