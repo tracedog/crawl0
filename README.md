@@ -78,11 +78,81 @@ async def main():
 asyncio.run(main())
 ```
 
-### Docker
+### Docker (CLI)
 
 ```bash
 docker compose build
 docker compose run crawl0 scrape https://example.com --format json
+```
+
+### API Server
+
+Start the API server on port 9000:
+
+```bash
+docker compose up -d
+# or without Docker:
+uvicorn crawl0.api.main:app --host 0.0.0.0 --port 9000
+```
+
+Swagger docs at [http://localhost:9000/docs](http://localhost:9000/docs)
+
+#### Scrape a URL
+
+```bash
+curl -X POST http://localhost:9000/scrape \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com", "format": "markdown"}'
+```
+
+#### Crawl a site
+
+```bash
+curl -X POST http://localhost:9000/crawl \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com", "max_depth": 2, "max_pages": 10}'
+```
+
+#### Extract structured data
+
+```bash
+curl -X POST http://localhost:9000/extract \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com", "schema": "restaurant"}'
+```
+
+#### Batch process URLs
+
+```bash
+# Submit batch job
+curl -X POST http://localhost:9000/batch \
+  -H "Content-Type: application/json" \
+  -d '{"urls": ["https://example.com", "https://example.org"], "webhook_url": "https://myapp.com/hook"}'
+
+# Check job status
+curl http://localhost:9000/jobs/{job_id}
+```
+
+#### Screenshot
+
+```bash
+curl -X POST http://localhost:9000/screenshot \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com"}' --output screenshot.png
+```
+
+#### PDF
+
+```bash
+curl -X POST http://localhost:9000/pdf \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com"}' --output page.pdf
+```
+
+#### Health check
+
+```bash
+curl http://localhost:9000/health
 ```
 
 ## Output Format (JSON)
