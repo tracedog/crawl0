@@ -1,0 +1,8 @@
+services:
+  crawl0:
+    build: .
+    container_name: crawl0
+    volumes:
+      - ./output:/app/output
+    entrypoint: ["crawl0"]
+    command: ["--help"]
