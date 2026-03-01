@@ -245,14 +245,16 @@ async def scrape_async(
     if not active_proxy and proxy_rotator:
         active_proxy = proxy_rotator.get_next()
 
-    method = "playwright" if force_playwright else "httpx"
+    # Stealth mode always uses Playwright (httpx defeats the purpose of stealth)
+    use_playwright = force_playwright or stealth
+    method = "playwright" if use_playwright else "httpx"
     html = ""
     status_code = 0
     max_retries = 2 if stealth else 0
 
     for attempt in range(max_retries + 1):
         try:
-            if not force_playwright:
+            if not use_playwright:
                 html, status_code = await _scrape_httpx(
                     url,
                     headers=headers,
