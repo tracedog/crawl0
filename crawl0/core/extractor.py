@@ -31,9 +31,7 @@ async def extract_async(
         ValueError: If schema name is not recognized.
     """
     if schema not in EXTRACTORS:
-        raise ValueError(
-            f"Unknown schema '{schema}'. Available: {', '.join(EXTRACTORS.keys())}"
-        )
+        raise ValueError(f"Unknown schema '{schema}'. Available: {', '.join(EXTRACTORS.keys())}")
 
     result = await scrape_async(
         url,
@@ -55,6 +53,4 @@ def extract(
     respect_robots: bool = True,
 ) -> BaseModel:
     """Synchronous wrapper for extract_async."""
-    return asyncio.run(
-        extract_async(url, schema, force_playwright, respect_robots)
-    )
+    return asyncio.run(extract_async(url, schema, force_playwright, respect_robots))

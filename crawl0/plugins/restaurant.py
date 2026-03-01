@@ -11,24 +11,46 @@ from crawl0.plugins.base import BaseExtractor
 
 # Price pattern: $12, $12.99, 12.99, etc.
 PRICE_RE = re.compile(r"\$?\d{1,4}(?:\.\d{2})?")
-PHONE_RE = re.compile(
-    r"(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}"
-)
+PHONE_RE = re.compile(r"(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}")
 HOURS_RE = re.compile(
     r"(?:mon|tue|wed|thu|fri|sat|sun|monday|tuesday|wednesday|thursday|friday|saturday|sunday)"
     r"[^:\n]{0,30}?\d{1,2}(?::\d{2})?\s*(?:am|pm|AM|PM)",
     re.IGNORECASE,
 )
 CUISINE_KEYWORDS = [
-    "mexican", "italian", "chinese", "japanese", "thai", "indian", "french",
-    "american", "mediterranean", "korean", "vietnamese", "greek", "sushi",
-    "pizza", "burgers", "seafood", "steakhouse", "bbq", "barbecue", "vegan",
-    "vegetarian", "tapas", "ramen", "pho", "tacos", "dim sum", "cajun",
+    "mexican",
+    "italian",
+    "chinese",
+    "japanese",
+    "thai",
+    "indian",
+    "french",
+    "american",
+    "mediterranean",
+    "korean",
+    "vietnamese",
+    "greek",
+    "sushi",
+    "pizza",
+    "burgers",
+    "seafood",
+    "steakhouse",
+    "bbq",
+    "barbecue",
+    "vegan",
+    "vegetarian",
+    "tapas",
+    "ramen",
+    "pho",
+    "tacos",
+    "dim sum",
+    "cajun",
 ]
 
 
 class MenuItem(BaseModel):
     """A single menu item."""
+
     name: str
     price: float | None = None
     description: str = ""
@@ -36,6 +58,7 @@ class MenuItem(BaseModel):
 
 class RestaurantData(BaseModel):
     """Structured restaurant data."""
+
     name: str | None = None
     cuisine_type: list[str] = Field(default_factory=list)
     menu_items: list[MenuItem] = Field(default_factory=list)
@@ -86,8 +109,8 @@ class RestaurantExtractor(BaseExtractor):
         # Strategy 1: Look for elements with price patterns nearby
         # Common patterns: <div class="menu-item">, <li> with name + price
         menu_containers = soup.find_all(
-            class_=lambda c: c and any(
-                k in c.lower() for k in ["menu", "item", "dish", "food", "product"]
+            class_=lambda c: (
+                c and any(k in c.lower() for k in ["menu", "item", "dish", "food", "product"])
             )
         )
 
@@ -103,7 +126,7 @@ class RestaurantExtractor(BaseExtractor):
             # Name is text before the price
             idx = text.find(price_str)
             name = text[:idx].strip().rstrip("–—-·.").strip()
-            desc = text[idx + len(price_str):].strip().lstrip("–—-·.").strip()
+            desc = text[idx + len(price_str) :].strip().lstrip("–—-·.").strip()
 
             if name and 2 < len(name) < 100:
                 items.append(MenuItem(name=name, price=price_val, description=desc[:200]))
@@ -121,7 +144,9 @@ class RestaurantExtractor(BaseExtractor):
                     price_val = float(prices[0].replace("$", ""))
                     name = heading.get_text(strip=True)
                     if name and 2 < len(name) < 100:
-                        items.append(MenuItem(name=name, price=price_val, description=sibling_text[:200]))
+                        items.append(
+                            MenuItem(name=name, price=price_val, description=sibling_text[:200])
+                        )
 
         # Deduplicate by name
         seen: set[str] = set()

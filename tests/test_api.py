@@ -76,7 +76,9 @@ class TestCrawl:
     @patch("crawl0.api.main.crawl_async")
     def test_crawl(self, mock_crawl, client, mock_scrape_result):
         mock_crawl.return_value = [mock_scrape_result]
-        resp = client.post("/crawl", json={"url": "https://example.com", "max_depth": 1, "max_pages": 5})
+        resp = client.post(
+            "/crawl", json={"url": "https://example.com", "max_depth": 1, "max_pages": 5}
+        )
         assert resp.status_code == 200
         data = resp.json()
         assert data["total_pages"] == 1
@@ -117,9 +119,12 @@ class TestBatch:
             mock_q.create_job.return_value = mock_job
             mock_q.run_job = AsyncMock()
 
-            resp = client.post("/batch", json={
-                "urls": ["https://example.com", "https://example.org"],
-            })
+            resp = client.post(
+                "/batch",
+                json={
+                    "urls": ["https://example.com", "https://example.org"],
+                },
+            )
             assert resp.status_code == 200
             data = resp.json()
             assert data["job_id"] == "test-123"
@@ -137,6 +142,7 @@ class TestJobStatus:
 
     def test_job_found(self, client):
         from crawl0.api.models import OutputFormat
+
         job = job_queue.create_job(urls=["https://example.com"], format=OutputFormat.markdown)
         resp = client.get(f"/jobs/{job.job_id}")
         assert resp.status_code == 200
@@ -153,6 +159,7 @@ class TestScreenshot:
 
         async def _mock_ss(url, output_path, full_page):
             import shutil
+
             shutil.copy(str(png_file), output_path)
             return output_path
 

@@ -7,5 +7,5 @@ build/
 .pytest_cache/
 .ruff_cache/
 *.png
-output/
+/output/
 .venv/

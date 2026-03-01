@@ -10,17 +10,37 @@ from typing import Any
 # --- User-Agent pools (real, current browsers) ---
 
 _CHROME_VERSIONS = [
-    "120.0.0.0", "121.0.0.0", "122.0.0.0", "123.0.0.0", "124.0.0.0",
-    "125.0.0.0", "126.0.0.0", "127.0.0.0", "128.0.0.0", "129.0.0.0",
+    "120.0.0.0",
+    "121.0.0.0",
+    "122.0.0.0",
+    "123.0.0.0",
+    "124.0.0.0",
+    "125.0.0.0",
+    "126.0.0.0",
+    "127.0.0.0",
+    "128.0.0.0",
+    "129.0.0.0",
 ]
 
 _FIREFOX_VERSIONS = [
-    "121.0", "122.0", "123.0", "124.0", "125.0",
-    "126.0", "127.0", "128.0", "129.0", "130.0",
+    "121.0",
+    "122.0",
+    "123.0",
+    "124.0",
+    "125.0",
+    "126.0",
+    "127.0",
+    "128.0",
+    "129.0",
+    "130.0",
 ]
 
 _SAFARI_VERSIONS = [
-    "17.2", "17.3", "17.4", "17.5", "17.6",
+    "17.2",
+    "17.3",
+    "17.4",
+    "17.5",
+    "17.6",
 ]
 
 _PLATFORMS = [
@@ -52,10 +72,19 @@ _LANGUAGES = [
 ]
 
 _TIMEZONES = [
-    "America/New_York", "America/Chicago", "America/Denver", "America/Los_Angeles",
-    "America/Phoenix", "America/Anchorage", "Pacific/Honolulu",
-    "Europe/London", "Europe/Berlin", "Europe/Paris",
-    "Asia/Tokyo", "Asia/Shanghai", "Asia/Kolkata",
+    "America/New_York",
+    "America/Chicago",
+    "America/Denver",
+    "America/Los_Angeles",
+    "America/Phoenix",
+    "America/Anchorage",
+    "Pacific/Honolulu",
+    "Europe/London",
+    "Europe/Berlin",
+    "Europe/Paris",
+    "Asia/Tokyo",
+    "Asia/Shanghai",
+    "Asia/Kolkata",
     "Australia/Sydney",
 ]
 
@@ -213,6 +242,7 @@ def _platform_to_sec_ch(os_label: str) -> str:
 
 
 # --- Human-like behavior simulation ---
+
 
 def gaussian_delay(mean: float = 1.0, std: float = 0.3, minimum: float = 0.2) -> float:
     """Generate a gaussian-distributed delay in seconds."""

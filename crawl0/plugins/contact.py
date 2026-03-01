@@ -11,9 +11,7 @@ from pydantic import BaseModel, Field
 from crawl0.plugins.base import BaseExtractor
 
 EMAIL_RE = re.compile(r"[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}")
-PHONE_RE = re.compile(
-    r"(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}"
-)
+PHONE_RE = re.compile(r"(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}")
 
 SOCIAL_DOMAINS = {
     "facebook.com": "facebook",
@@ -34,6 +32,7 @@ SOCIAL_DOMAINS = {
 
 class ContactData(BaseModel):
     """Structured contact information."""
+
     emails: list[str] = Field(default_factory=list)
     phones: list[str] = Field(default_factory=list)
     addresses: list[str] = Field(default_factory=list)
@@ -59,8 +58,7 @@ class ContactExtractor(BaseExtractor):
         emails = EMAIL_RE.findall(text)
         # Filter out common false positives
         filtered = [
-            e for e in emails
-            if not e.endswith((".png", ".jpg", ".gif", ".svg", ".css", ".js"))
+            e for e in emails if not e.endswith((".png", ".jpg", ".gif", ".svg", ".css", ".js"))
         ]
         return list(dict.fromkeys(filtered))[:10]
 

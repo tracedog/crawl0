@@ -107,8 +107,21 @@ class Crawler:
                         continue
                     # Skip common non-page extensions
                     path = urlparse(link_normalized).path.lower()
-                    skip_exts = {".pdf", ".jpg", ".jpeg", ".png", ".gif", ".svg", ".zip",
-                                 ".mp3", ".mp4", ".css", ".js", ".xml", ".rss"}
+                    skip_exts = {
+                        ".pdf",
+                        ".jpg",
+                        ".jpeg",
+                        ".png",
+                        ".gif",
+                        ".svg",
+                        ".zip",
+                        ".mp3",
+                        ".mp4",
+                        ".css",
+                        ".js",
+                        ".xml",
+                        ".rss",
+                    }
                     if any(path.endswith(ext) for ext in skip_exts):
                         continue
                     queue.append((link_normalized, depth + 1))
@@ -155,6 +168,4 @@ def crawl(
     respect_robots: bool = True,
 ) -> list[ScrapeResult]:
     """Synchronous wrapper for crawl_async."""
-    return asyncio.run(
-        crawl_async(url, max_depth, max_pages, same_domain_only, respect_robots)
-    )
+    return asyncio.run(crawl_async(url, max_depth, max_pages, same_domain_only, respect_robots))

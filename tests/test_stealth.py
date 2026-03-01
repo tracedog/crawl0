@@ -28,10 +28,19 @@ class TestFingerprintGeneration:
         assert "Sec-Fetch-Dest" in fp.headers
         assert "Sec-Fetch-Mode" in fp.headers
         assert fp.timezone in [
-            "America/New_York", "America/Chicago", "America/Denver",
-            "America/Los_Angeles", "America/Phoenix", "America/Anchorage",
-            "Pacific/Honolulu", "Europe/London", "Europe/Berlin",
-            "Europe/Paris", "Asia/Tokyo", "Asia/Shanghai", "Asia/Kolkata",
+            "America/New_York",
+            "America/Chicago",
+            "America/Denver",
+            "America/Los_Angeles",
+            "America/Phoenix",
+            "America/Anchorage",
+            "Pacific/Honolulu",
+            "Europe/London",
+            "Europe/Berlin",
+            "Europe/Paris",
+            "Asia/Tokyo",
+            "Asia/Shanghai",
+            "Asia/Kolkata",
             "Australia/Sydney",
         ]
 

@@ -12,8 +12,15 @@ from crawl0.api.models import JobStatus, ScrapeResponse, OutputFormat
 class Job:
     """Represents a batch processing job."""
 
-    def __init__(self, urls: list[str], format: OutputFormat, concurrency: int,
-                 force_playwright: bool, respect_robots: bool, webhook_url: str | None = None):
+    def __init__(
+        self,
+        urls: list[str],
+        format: OutputFormat,
+        concurrency: int,
+        force_playwright: bool,
+        respect_robots: bool,
+        webhook_url: str | None = None,
+    ):
         self.job_id: str = str(uuid.uuid4())
         self.urls = urls
         self.format = format
@@ -53,7 +60,9 @@ class JobQueue:
 
     @property
     def active_count(self) -> int:
-        return sum(1 for j in self._jobs.values() if j.status in (JobStatus.queued, JobStatus.running))
+        return sum(
+            1 for j in self._jobs.values() if j.status in (JobStatus.queued, JobStatus.running)
+        )
 
     async def run_job(self, job: Job) -> None:
         """Execute a batch job asynchronously."""

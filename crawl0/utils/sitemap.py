@@ -15,7 +15,9 @@ SITEMAP_INDEX_TAG = f"{{{SITEMAP_NS['sm']}}}sitemapindex"
 async def _fetch_text(url: str, timeout: float = 15.0) -> str | None:
     """Fetch URL content as text, return None on failure."""
     try:
-        async with httpx.AsyncClient(timeout=timeout, verify=False, follow_redirects=True) as client:
+        async with httpx.AsyncClient(
+            timeout=timeout, verify=False, follow_redirects=True
+        ) as client:
             resp = await client.get(url)
             if resp.status_code == 200:
                 return resp.text

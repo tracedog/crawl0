@@ -15,6 +15,7 @@ PRICE_RE = re.compile(r"\$\s?\d{1,6}(?:,\d{3})*(?:\.\d{2})?")
 
 class Product(BaseModel):
     """A single product."""
+
     name: str
     price: float | None = None
     description: str = ""
@@ -25,6 +26,7 @@ class Product(BaseModel):
 
 class EcommerceData(BaseModel):
     """Structured e-commerce data."""
+
     products: list[Product] = Field(default_factory=list)
     currency: str = "USD"
     url: str = ""
@@ -64,21 +66,23 @@ class EcommerceExtractor(BaseExtractor):
             if img_el and img_el.get("src"):
                 images.append(urljoin(base_url, img_el["src"]))
 
-            products.append(Product(
-                name=name,
-                price=price,
-                description=(desc_el.get_text(" ", strip=True)[:300] if desc_el else ""),
-                images=images,
-                availability=(avail_el.get_text(strip=True) if avail_el else ""),
-            ))
+            products.append(
+                Product(
+                    name=name,
+                    price=price,
+                    description=(desc_el.get_text(" ", strip=True)[:300] if desc_el else ""),
+                    images=images,
+                    availability=(avail_el.get_text(strip=True) if avail_el else ""),
+                )
+            )
 
         if products:
             return products
 
         # Strategy 2: Common CSS class patterns for product cards
         product_containers = soup.find_all(
-            class_=lambda c: c and any(
-                k in c.lower() for k in ["product", "item", "card", "listing"]
+            class_=lambda c: (
+                c and any(k in c.lower() for k in ["product", "item", "card", "listing"])
             )
         )
 
@@ -116,20 +120,20 @@ class EcommerceExtractor(BaseExtractor):
             # Availability
             avail = ""
             avail_el = container.find(
-                class_=lambda c: c and any(
-                    k in c.lower() for k in ["stock", "avail", "inventory"]
-                )
+                class_=lambda c: c and any(k in c.lower() for k in ["stock", "avail", "inventory"])
             )
             if avail_el:
                 avail = avail_el.get_text(strip=True)
 
-            products.append(Product(
-                name=name,
-                price=price,
-                images=images,
-                availability=avail,
-                url=link,
-            ))
+            products.append(
+                Product(
+                    name=name,
+                    price=price,
+                    images=images,
+                    availability=avail,
+                    url=link,
+                )
+            )
 
         # Deduplicate by name
         seen: set[str] = set()

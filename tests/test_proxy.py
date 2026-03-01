@@ -51,8 +51,12 @@ class TestProxyRotator:
         assert r.size == 3
         urls = [r.get_next().url for _ in range(6)]
         assert urls == [
-            "http://p1:8080", "http://p2:8080", "http://p3:8080",
-            "http://p1:8080", "http://p2:8080", "http://p3:8080",
+            "http://p1:8080",
+            "http://p2:8080",
+            "http://p3:8080",
+            "http://p1:8080",
+            "http://p2:8080",
+            "http://p3:8080",
         ]
 
     def test_random(self):

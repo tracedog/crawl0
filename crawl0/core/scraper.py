@@ -136,9 +136,9 @@ async def _scrape_playwright(
         page = await context.new_page()
 
         # Set extra headers
-        await page.set_extra_http_headers({
-            k: v for k, v in fp.headers.items() if k != "User-Agent"
-        })
+        await page.set_extra_http_headers(
+            {k: v for k, v in fp.headers.items() if k != "User-Agent"}
+        )
 
         # Block unnecessary resources for speed
         await page.route(

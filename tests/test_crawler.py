@@ -25,8 +25,12 @@ class TestCrawler:
         crawler = Crawler()
         assert crawler._normalize_url("https://example.com/page/") == "https://example.com/page"
         assert crawler._normalize_url("https://example.com") == "https://example.com/"
-        assert crawler._normalize_url("https://example.com/page#section") == "https://example.com/page"
-        assert crawler._normalize_url("https://example.com/page?q=1") == "https://example.com/page?q=1"
+        assert (
+            crawler._normalize_url("https://example.com/page#section") == "https://example.com/page"
+        )
+        assert (
+            crawler._normalize_url("https://example.com/page?q=1") == "https://example.com/page?q=1"
+        )
 
     def test_same_domain(self):
         crawler = Crawler()
@@ -36,9 +40,14 @@ class TestCrawler:
     @pytest.mark.asyncio
     async def test_crawl_respects_max_pages(self):
         results_to_return = [
-            _make_result("https://example.com/", links=[
-                "https://example.com/a", "https://example.com/b", "https://example.com/c",
-            ]),
+            _make_result(
+                "https://example.com/",
+                links=[
+                    "https://example.com/a",
+                    "https://example.com/b",
+                    "https://example.com/c",
+                ],
+            ),
             _make_result("https://example.com/a"),
             _make_result("https://example.com/b"),
         ]
@@ -62,10 +71,13 @@ class TestCrawler:
     @pytest.mark.asyncio
     async def test_crawl_respects_same_domain(self):
         async def mock_scrape(url, **kwargs):
-            return _make_result(url, links=[
-                "https://example.com/page1",
-                "https://evil.com/steal",
-            ])
+            return _make_result(
+                url,
+                links=[
+                    "https://example.com/page1",
+                    "https://evil.com/steal",
+                ],
+            )
 
         with patch("crawl0.core.crawler.scrape_async", side_effect=mock_scrape):
             with patch("crawl0.core.crawler.RobotsChecker") as mock_robots:
@@ -78,11 +90,14 @@ class TestCrawler:
     @pytest.mark.asyncio
     async def test_crawl_skips_file_extensions(self):
         async def mock_scrape(url, **kwargs):
-            return _make_result(url, links=[
-                "https://example.com/doc.pdf",
-                "https://example.com/image.jpg",
-                "https://example.com/page",
-            ])
+            return _make_result(
+                url,
+                links=[
+                    "https://example.com/doc.pdf",
+                    "https://example.com/image.jpg",
+                    "https://example.com/page",
+                ],
+            )
 
         with patch("crawl0.core.crawler.scrape_async", side_effect=mock_scrape):
             with patch("crawl0.core.crawler.RobotsChecker") as mock_robots:

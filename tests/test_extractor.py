@@ -123,7 +123,9 @@ class TestSocialExtractor:
         assert result.platform == "twitter"
 
     def test_extract_display_name(self):
-        html = '<html><head><meta property="og:title" content="Elon Musk"></head><body></body></html>'
+        html = (
+            '<html><head><meta property="og:title" content="Elon Musk"></head><body></body></html>'
+        )
         ext = SocialExtractor()
         result = ext.extract_from_html(html, "https://x.com/elonmusk")
         assert result.display_name == "Elon Musk"

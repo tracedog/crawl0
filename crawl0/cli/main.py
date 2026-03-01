@@ -26,7 +26,11 @@ def version_callback(value: bool) -> None:
 @app.callback()
 def main(
     version: Optional[bool] = typer.Option(
-        None, "--version", "-v", callback=version_callback, is_eager=True,
+        None,
+        "--version",
+        "-v",
+        callback=version_callback,
+        is_eager=True,
         help="Show version and exit.",
     ),
 ) -> None:
@@ -40,10 +44,20 @@ def scrape(
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Save output to file"),
     playwright: bool = typer.Option(False, "--playwright", "-p", help="Force Playwright rendering"),
     no_robots: bool = typer.Option(False, "--no-robots", help="Ignore robots.txt"),
-    include_html: bool = typer.Option(False, "--include-html", help="Include raw HTML in JSON output"),
-    stealth: bool = typer.Option(False, "--stealth", help="Enable full stealth mode (fingerprint randomization, human behavior)"),
-    proxy_file: Optional[str] = typer.Option(None, "--proxy-file", help="Path to proxy list file (one per line)"),
-    proxy: Optional[str] = typer.Option(None, "--proxy", help="Single proxy URL (e.g. http://host:port)"),
+    include_html: bool = typer.Option(
+        False, "--include-html", help="Include raw HTML in JSON output"
+    ),
+    stealth: bool = typer.Option(
+        False,
+        "--stealth",
+        help="Enable full stealth mode (fingerprint randomization, human behavior)",
+    ),
+    proxy_file: Optional[str] = typer.Option(
+        None, "--proxy-file", help="Path to proxy list file (one per line)"
+    ),
+    proxy: Optional[str] = typer.Option(
+        None, "--proxy", help="Single proxy URL (e.g. http://host:port)"
+    ),
 ) -> None:
     """Scrape a URL and output clean markdown, JSON, or HTML."""
     from crawl0.core.scraper import scrape_async
@@ -111,7 +125,9 @@ def scrape(
 def screenshot(
     url: str = typer.Argument(..., help="URL to screenshot"),
     output: str = typer.Option("screenshot.png", "--output", "-o", help="Output file path"),
-    full_page: bool = typer.Option(True, "--full-page/--viewport", help="Full page or viewport only"),
+    full_page: bool = typer.Option(
+        True, "--full-page/--viewport", help="Full page or viewport only"
+    ),
 ) -> None:
     """Take a screenshot of a URL."""
     from crawl0.core.scraper import screenshot_async
@@ -127,7 +143,9 @@ def crawl(
     max_pages: int = typer.Option(50, "--max-pages", "-m", help="Maximum pages to crawl"),
     format: str = typer.Option("md", "--format", "-f", help="Output format: md, json"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output directory"),
-    same_domain: bool = typer.Option(True, "--same-domain/--all-domains", help="Stay on same domain"),
+    same_domain: bool = typer.Option(
+        True, "--same-domain/--all-domains", help="Stay on same domain"
+    ),
     no_robots: bool = typer.Option(False, "--no-robots", help="Ignore robots.txt"),
     playwright: bool = typer.Option(False, "--playwright", "-p", help="Force Playwright rendering"),
 ) -> None:
@@ -160,9 +178,9 @@ def crawl(
             if format == "json":
                 typer.echo(to_json(result))
             else:
-                typer.echo(f"\n{'='*60}")
+                typer.echo(f"\n{'=' * 60}")
                 typer.echo(f"URL: {result.url}")
-                typer.echo(f"{'='*60}\n")
+                typer.echo(f"{'=' * 60}\n")
                 typer.echo(result.markdown)
 
     typer.secho(
@@ -198,7 +216,9 @@ def sitemap(
 @app.command()
 def extract(
     url: str = typer.Argument(..., help="URL to extract data from"),
-    schema: str = typer.Option(..., "--schema", "-s", help="Extraction schema: restaurant, ecommerce, contact, social"),
+    schema: str = typer.Option(
+        ..., "--schema", "-s", help="Extraction schema: restaurant, ecommerce, contact, social"
+    ),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Save JSON output to file"),
     playwright: bool = typer.Option(False, "--playwright", "-p", help="Force Playwright rendering"),
     no_robots: bool = typer.Option(False, "--no-robots", help="Ignore robots.txt"),

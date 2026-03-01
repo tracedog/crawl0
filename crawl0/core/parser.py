@@ -15,9 +15,21 @@ STRIP_TAGS = {"script", "style", "noscript", "iframe", "svg"}
 STRIP_ROLES = {"navigation", "banner", "contentinfo", "complementary", "search"}
 STRIP_TAGS_SEMANTIC = {"nav", "footer", "header"}
 STRIP_CLASS_PATTERNS = {
-    "sidebar", "menu", "nav", "footer", "header", "banner", "cookie",
-    "popup", "modal", "overlay", "advertisement", "ad-", "social-share",
-    "breadcrumb", "pagination",
+    "sidebar",
+    "menu",
+    "nav",
+    "footer",
+    "header",
+    "banner",
+    "cookie",
+    "popup",
+    "modal",
+    "overlay",
+    "advertisement",
+    "ad-",
+    "social-share",
+    "breadcrumb",
+    "pagination",
 }
 
 
@@ -38,6 +50,7 @@ def _should_strip_element(tag: BeautifulSoup) -> bool:
 
 def extract_metadata(soup: BeautifulSoup, url: str) -> PageMetadata:
     """Extract page metadata from HTML."""
+
     def meta_content(name: str | None = None, property: str | None = None) -> str | None:
         attrs = {}
         if name:
@@ -49,7 +62,11 @@ def extract_metadata(soup: BeautifulSoup, url: str) -> PageMetadata:
 
     title_tag = soup.find("title")
     link_canonical = soup.find("link", attrs={"rel": "canonical"})
-    link_icon = soup.find("link", attrs={"rel": lambda x: x and "icon" in x.lower()}) if soup.find("link") else None
+    link_icon = (
+        soup.find("link", attrs={"rel": lambda x: x and "icon" in x.lower()})
+        if soup.find("link")
+        else None
+    )
     html_tag = soup.find("html")
 
     return PageMetadata(
@@ -63,7 +80,9 @@ def extract_metadata(soup: BeautifulSoup, url: str) -> PageMetadata:
         og_type=meta_content(property="og:type"),
         canonical_url=link_canonical.get("href") if link_canonical else None,
         language=html_tag.get("lang") if html_tag else None,
-        favicon=urljoin(url, link_icon.get("href")) if link_icon and link_icon.get("href") else None,
+        favicon=urljoin(url, link_icon.get("href"))
+        if link_icon and link_icon.get("href")
+        else None,
     )
 
 

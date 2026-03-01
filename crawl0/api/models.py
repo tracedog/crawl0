@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field
 
 # --- Enums ---
 
+
 class OutputFormat(str, Enum):
     markdown = "markdown"
     md = "md"
@@ -26,6 +27,7 @@ class JobStatus(str, Enum):
 
 
 # --- Scrape ---
+
 
 class ScrapeRequest(BaseModel):
     url: str
@@ -53,6 +55,7 @@ class ScrapeResponse(BaseModel):
 
 # --- Crawl ---
 
+
 class CrawlRequest(BaseModel):
     url: str
     max_depth: int = Field(default=3, ge=1, le=10)
@@ -70,6 +73,7 @@ class CrawlResponse(BaseModel):
 
 
 # --- Extract ---
+
 
 class ExtractRequest(BaseModel):
     model_config = {"populate_by_name": True}
@@ -90,6 +94,7 @@ class ExtractResponse(BaseModel):
 
 # --- Batch ---
 
+
 class BatchRequest(BaseModel):
     urls: list[str] = Field(..., min_length=1, max_length=1000)
     format: OutputFormat = OutputFormat.markdown
@@ -108,6 +113,7 @@ class BatchResponse(BaseModel):
 
 # --- Screenshot ---
 
+
 class ScreenshotRequest(BaseModel):
     url: str
     full_page: bool = True
@@ -115,12 +121,14 @@ class ScreenshotRequest(BaseModel):
 
 # --- PDF ---
 
+
 class PdfRequest(BaseModel):
     url: str
     force_playwright: bool = False
 
 
 # --- Job Status ---
+
 
 class JobStatusResponse(BaseModel):
     job_id: str
@@ -134,6 +142,7 @@ class JobStatusResponse(BaseModel):
 
 
 # --- Health ---
+
 
 class HealthResponse(BaseModel):
     status: str = "ok"

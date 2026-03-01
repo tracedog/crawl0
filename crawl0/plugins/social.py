@@ -30,6 +30,7 @@ def _parse_count(text: str) -> int | None:
 
 class PostSummary(BaseModel):
     """Summary of a social media post."""
+
     text: str = ""
     timestamp: str = ""
     likes: int | None = None
@@ -38,6 +39,7 @@ class PostSummary(BaseModel):
 
 class SocialData(BaseModel):
     """Structured social media profile data."""
+
     platform: str = ""
     username: str = ""
     display_name: str = ""
@@ -59,8 +61,19 @@ class SocialExtractor(BaseExtractor):
         # Detect platform from URL
         platform = ""
         url_lower = url.lower()
-        for p in ["twitter", "x.com", "instagram", "facebook", "linkedin",
-                   "tiktok", "youtube", "github", "threads", "mastodon", "bluesky"]:
+        for p in [
+            "twitter",
+            "x.com",
+            "instagram",
+            "facebook",
+            "linkedin",
+            "tiktok",
+            "youtube",
+            "github",
+            "threads",
+            "mastodon",
+            "bluesky",
+        ]:
             if p in url_lower:
                 platform = "twitter" if p == "x.com" else p
                 break
@@ -86,6 +99,7 @@ class SocialExtractor(BaseExtractor):
 
         # Extract from URL path
         from urllib.parse import urlparse
+
         path = urlparse(url).path.strip("/")
         parts = path.split("/")
         if parts and parts[0] and not parts[0].startswith(("p", "status", "post", "reel")):
@@ -132,9 +146,12 @@ class SocialExtractor(BaseExtractor):
 
         # Look for common post/tweet/status containers
         containers = soup.find_all(
-            class_=lambda c: c and any(
-                k in c.lower()
-                for k in ["post", "tweet", "status", "entry", "feed-item", "timeline"]
+            class_=lambda c: (
+                c
+                and any(
+                    k in c.lower()
+                    for k in ["post", "tweet", "status", "entry", "feed-item", "timeline"]
+                )
             )
         )
 
