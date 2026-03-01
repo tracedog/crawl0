@@ -29,6 +29,8 @@ class TestLiveScrape:
             force_playwright=True,
             respect_robots=False,
         )
+        if result.status_code == 0 and result.error:
+            pytest.skip(f"Playwright browsers not available: {result.error[:80]}")
         assert result.status_code == 200
         assert "Example Domain" in result.markdown
         assert result.method == "playwright"
